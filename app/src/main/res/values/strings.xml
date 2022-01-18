@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">KinisiTrailTracker</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">New Activity</string>
+    <string name="title_search">Search</string>
+    <string name="title_dashboard">Navigate</string>
+    <string name="title_favorites">Favorites</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
 
     <!--Mapbox access token-->
     <string name="access_token">pk.eyJ1Ijoia2luaXNpdGVhbSIsImEiOiJja3kzZHNidnkwMTNhMm9wOGd1OHVlbXk3In0.8j_gRbK8REKjvfN1cRx1Xw</string>
