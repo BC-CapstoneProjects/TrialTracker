@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/ic_baseline_directions_walk_24"
+        android:src="@mipmap/kinisi_launcher"
         android:layout_centerInParent="true"
         android:id="@+id/iv_walk"
         android:contentDescription="TODO" />
