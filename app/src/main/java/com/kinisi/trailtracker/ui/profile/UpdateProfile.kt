@@ -9,17 +9,25 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.kinisi.trailtracker.R
 import kotlinx.android.synthetic.main.activity_update_profile.*
 
 class UpdateProfile : AppCompatActivity() {
-   // FirebaseFirestore db = FirebaseFirestore.getInstance()
-
+    val db = Firebase.database
+   // val myRef = db.getReference("name")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.kinisi.trailtracker.R.layout.activity_update_profile)
+
+        FirebaseAuth.getInstance().currentUser?.let {firebaseUser ->
+            //if the user is logged in, display their info on the screen
+
+        }
 
         btnUpdateImage.setOnClickListener {
             // update the profile image here
