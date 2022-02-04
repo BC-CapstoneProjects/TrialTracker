@@ -39,10 +39,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-
     ): View? {
-
-
         profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
 
