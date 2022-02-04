@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=BE:06:45:D0:8B:3B:C1:B5:4E:FD:7A:65:4D:C1:65:1B:FB:8F:3D:1F%3Bcom.kinisi.trailtracker
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.kinisi.trailtracker
+
+    SHA-1 certificate fingerprint:
+    BE:06:45:D0:8B:3B:C1:B5:4E:FD:7A:65:4D:C1:65:1B:FB:8F:3D:1F
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA676WY6PNFv3oIm7CuoM4yOF2I4l6Qkwg</string>
+</resources>

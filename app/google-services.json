@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "432969002296",
+    "project_id": "kinisitrailtracker",
+    "storage_bucket": "kinisitrailtracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432969002296:android:13d570323e149a7c4725cd",
+        "android_client_info": {
+          "package_name": "com.kinisi.trailtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432969002296-4ij0651jrrghll9i4mb5tifccge0f067.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kinisi.trailtracker",
+            "certificate_hash": "b0bd8d7442e0975de98ea15ad1cd0e656cda1753"
+          }
+        },
+        {
+          "client_id": "432969002296-55qn66kin3i6u1b98a778mfldm1rbb3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGshSwXYYGhRJ0t6tWE9dLmRazVTrMAVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432969002296-55qn66kin3i6u1b98a778mfldm1rbb3a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
