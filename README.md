@@ -1,7 +1,8 @@
 # Kinisi Trail Tracker
-### Welcome to Kinisi
 
-# <img src="./Images/KinisiTransparent.png" alt="Kinisi logo" height="240" align=center></img> 
+# <img src="./Images/KinisiTransparent.png" alt="Kinisi logo" height="240" style="text-align:center;"></img> 
+
+### Welcome to Kinisi
 
 **Still in development**
 
