@@ -1,5 +1,5 @@
 # Kinisi Trail Tracker
-## Welcome to Kinisi
+### Welcome to Kinisi
 
 # <img src="./Images/KinisiTransparent.png" alt="Kinisi logo" height="120"></img> 
 
