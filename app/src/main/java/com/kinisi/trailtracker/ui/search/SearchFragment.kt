@@ -16,40 +16,41 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.kinisi.trailtracker.databinding.FragmentSearchBinding
-import com.google.android.gms.maps.GoogleMap
-import android.location.Geocoder
-
-
 import android.R
+import android.content.Intent
 import android.location.Address
 import android.util.Log
-
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.lifecycle.Transformations.map
 import com.kinisi.trailtracker.MainActivity
 import java.io.IOException
 import java.util.*
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
-
-
-
+import com.kinisi.trailtracker.databinding.FragmentProfileBinding
+import com.kinisi.trailtracker.ui.profile.ProfileViewModel
+import com.kinisi.trailtracker.ui.profile.UpdateProfile
+/*import com.google.android.gms.maps.MapView*/
+import com.kinisi.trailtracker.databinding.FragmentSearchBinding
+import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 
 class SearchFragment : Fragment() {
+    private lateinit var searchViewModel: SearchViewModel
+    private var _binding: FragmentSearchBinding? = null
+
+    private val binding get() = _binding!!
+
+
     private val callback = OnMapReadyCallback { googleMap ->
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        val sydney = LatLng(47.0, -122.0)
+        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+
+
     }
 
 
@@ -58,12 +59,37 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(com.kinisi.trailtracker.R.layout.fragment_maps, container, false)
+        searchViewModel =
+            ViewModelProvider(this).get(SearchViewModel::class.java)
+
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        val textView: TextView = binding.textProfile
+        searchViewModel.text.observe(viewLifecycleOwner, Observer {
+            textView.text = it
+        })
+
+        //Brings to UpdateProfile on settings button click
+        val speedbttn: Button = binding.speedbttn
+
+        speedbttn.setOnClickListener {
+            val intent = Intent(context, Speedometer::class.java)
+            startActivity(intent)
+        }
+
+
+        return root
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(com.kinisi.trailtracker.R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+
+
     }
 }

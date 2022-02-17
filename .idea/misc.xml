@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/font/header.xml" value="0.16944444444444445" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_speedometer.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_welcome_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.1" />
