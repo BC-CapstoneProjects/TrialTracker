@@ -22,10 +22,6 @@ import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
-
-
-
-
 class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel: ProfileViewModel
@@ -46,10 +42,18 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProfile
+      /*  val textView: TextView = binding.textProfile
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
-        })
+        })*/
+
+        //Brings to history activity on history button click
+        val historyBtn: Button = binding.historyButton
+
+        historyBtn.setOnClickListener {
+            val intent = Intent(context, HistoryActivity::class.java)
+            startActivity(intent)
+        }
 
         //Brings to UpdateProfile on settings button click
         val settingsBtn: Button = binding.settingsButton
@@ -58,7 +62,6 @@ class ProfileFragment : Fragment() {
             val intent = Intent(context, UpdateProfile::class.java)
             startActivity(intent)
         }
-
 
         return root
     }
