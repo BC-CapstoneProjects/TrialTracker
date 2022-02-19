@@ -63,8 +63,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
-
+    //Google Firestore
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    //Google Cloud Storage
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
