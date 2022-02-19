@@ -23,7 +23,7 @@
             android:textSize="15dp"
             />
 
-        <TextView
+     <!--   <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
@@ -31,7 +31,7 @@
             android:text="Update Profile"
             android:textAlignment="center"
             android:textSize="20sp" >
-        </TextView>
+        </TextView> -->
 
         <ImageView
             android:id="@+id/imageView"
