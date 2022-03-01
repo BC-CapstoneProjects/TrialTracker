@@ -59,6 +59,11 @@
             android:exported="false"
             android:label="History">
         </activity>
+        <activity
+            android:name=".ui.profile.ReviewsActivity"
+            android:exported="false"
+            android:label="Reviews">
+        </activity>
     </application>
 
 </manifest>

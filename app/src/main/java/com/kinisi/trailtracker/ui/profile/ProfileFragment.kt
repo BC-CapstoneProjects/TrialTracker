@@ -42,10 +42,13 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-      /*  val textView: TextView = binding.textProfile
-        profileViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })*/
+        //Brings to reviews activity on review button click
+        val reviewBtn: Button = binding.reviewsButton
+
+        reviewBtn.setOnClickListener {
+            val intent = Intent(context, ReviewsActivity::class.java)
+            startActivity(intent)
+        }
 
         //Brings to history activity on history button click
         val historyBtn: Button = binding.historyButton
@@ -65,12 +68,9 @@ class ProfileFragment : Fragment() {
 
         return root
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
-
    }
 
     override fun onDestroyView() {
