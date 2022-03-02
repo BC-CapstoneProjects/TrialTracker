@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_500"
-    tools:context=".ui.favorites.FavoritesFragment">
+    android:background="@color/white"
+    tools:context=".ui.profile.ReviewsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +14,6 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="70dp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
