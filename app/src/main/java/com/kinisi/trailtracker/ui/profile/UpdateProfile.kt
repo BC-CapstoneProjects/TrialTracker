@@ -68,7 +68,6 @@ class UpdateProfile : AppCompatActivity() {
 
             val selectedOption: Int = sex_RadioGroup!!.checkedRadioButtonId
             val radioButton = findViewById<RadioButton>(selectedOption)
-
             var sex=""
             //sets default sex to noSex
             if(sex_RadioGroup.getCheckedRadioButtonId() == -1){
@@ -77,32 +76,39 @@ class UpdateProfile : AppCompatActivity() {
                 sex = radioButton.text.toString()
             }
 
-            //Set info to user
-            val userInfo = hashMapOf(
-                "name" to name,
-                "height" to height,
-                "weight" to weight,
-                "dob" to DOB,
-                "sex" to sex
-            )
-            auth.currentUser?.let { it1 ->
-                db.collection("users").document(user!!.uid)
-                    .set(userInfo,SetOptions.merge())
-                    .addOnSuccessListener {
-                        Toast.makeText(getBaseContext(), "Success!", Toast.LENGTH_SHORT).show()
-                        Log.d(
-                            "docSnippets",
-                            "DocumentSnapshot successfully written!"
-                        )
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(
-                            "docSnippets",
-                            "Error writing document",
-                            e
-                        )
-                    }
+
+            if(name==""||height==""||weight==""){
+                Toast.makeText(this, "Error: Please enter all values", Toast.LENGTH_SHORT).show()
             }
+            else{
+                //Set info to user
+                val userInfo = hashMapOf(
+                    "name" to name,
+                    "height" to height,
+                    "weight" to weight,
+                    "dob" to DOB,
+                    "sex" to sex
+                )
+                auth.currentUser?.let { it1 ->
+                    db.collection("users").document(user!!.uid)
+                        .set(userInfo,SetOptions.merge())
+                        .addOnSuccessListener {
+                            Toast.makeText(getBaseContext(), "Success!", Toast.LENGTH_SHORT).show()
+                            Log.d(
+                                "docSnippets",
+                                "DocumentSnapshot successfully written!"
+                            )
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w(
+                                "docSnippets",
+                                "Error writing document",
+                                e
+                            )
+                        }
+                }
+            }
+
 
         }
 

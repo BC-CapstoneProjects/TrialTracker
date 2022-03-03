@@ -15,15 +15,18 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_update_profile.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_stats.Html" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/activity_stats.html" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/activity_stats.xml" value="0.14253124047000434" />
+        <entry key="app/src/main/res/layout/activity_update_profile.xml" value="0.287081409703984" />
         <entry key="app/src/main/res/layout/activity_welcome_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favorites2.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.15081521739130435" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2699228791773779" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.165" />
         <entry key="app/src/main/res/layout/frame_trailview.xml" value="0.335" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
