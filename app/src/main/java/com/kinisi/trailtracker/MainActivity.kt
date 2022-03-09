@@ -14,17 +14,23 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kinisi.trailtracker.databinding.ActivityMainBinding
 import com.kinisi.trailtracker.ui.login.SignInActivity
+import com.kinisi.trailtracker.databinding.FragmentDashboardBinding
+
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+
 
     // Firebase instance variables
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityMainBinding
+    lateinit var bind: FragmentDashboardBinding
+
 
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in.
+
         auth = Firebase.auth
         if (auth.currentUser == null) {
             // Not signed in, launch the Sign In activity
@@ -32,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             finish()
             return
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, SignInActivity::class.java))
         finish()
     }
+
 
     companion object {
         private const val TAG = "MainActivity"
