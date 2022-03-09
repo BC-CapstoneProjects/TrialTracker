@@ -15,7 +15,6 @@ android {
         versionCode 1
         versionName "1.0"
         resConfigs "en"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,19 +38,29 @@ android {
 
 dependencies {
 
+
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.7'
     implementation 'org.osmdroid:osmdroid-android:6.0.0'
     implementation 'in.unicodelabs.sorbh:kdgaugeview:1.0.0'
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.annotation:annotation:1.3.0'
@@ -59,7 +68,7 @@ dependencies {
     // Google Sign In SDK
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
 
-
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
     implementation 'com.google.firebase:firebase-auth-ktx'
@@ -67,6 +76,13 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    //Google Firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    //Google Cloud Storage
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    //MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
