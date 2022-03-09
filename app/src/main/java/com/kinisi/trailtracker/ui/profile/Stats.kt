@@ -20,6 +20,8 @@ import android.R.attr.data
 import android.R.attr.data
 import android.widget.Button
 import android.widget.TextView
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 
@@ -35,6 +37,7 @@ class Stats: AppCompatActivity () {
 
         title = "Bar Chart"
         val bChart = findViewById<BarChart>(R.id.progressBarChart)
+        println(bChart)
 
 
         //x values
@@ -49,12 +52,19 @@ class Stats: AppCompatActivity () {
 
         //y values
         val entries = ArrayList<BarEntry>()//: MutableList<BarEntry> = ArrayList()
-        entries.add(BarEntry(0f, 30f))
-        entries.add(BarEntry(1f, 80f))
-        entries.add(BarEntry(2f, 60f))
-        entries.add(BarEntry(3f, 50f))
-        entries.add(BarEntry(4f, 70f))
-        entries.add(BarEntry(5f, 60f))
+        entries.add(BarEntry(1f, 44f))
+        entries.add(BarEntry(2f, 56f))
+        entries.add(BarEntry(3f, 62f))
+        entries.add(BarEntry(4f, 66f))
+        entries.add(BarEntry(5f, 68f))
+        entries.add(BarEntry(6f, 56f))
+        entries.add(BarEntry(7f, 64f))
+        entries.add(BarEntry(8f, 70f))
+        entries.add(BarEntry(9f, 74f))
+        entries.add(BarEntry(10f, 72f))
+        entries.add(BarEntry(11f, 76f))
+        entries.add(BarEntry(12f, 82f))
+
 
         //bar data set
         val set = BarDataSet(entries, "BarDataSet")
@@ -83,8 +93,8 @@ class Stats: AppCompatActivity () {
 
         //remove description label
         //bChart.description.isEnabled = false
-        bChart.description.text = "Miles moved"
-        bChart.description.setPosition(600f,80f)
+        bChart.description.text = "Miles moved this year"
+        bChart.description.setPosition(700f,70f)
         bChart.description.setTextSize(20f)
         // bChart.description.setPosition()
 
