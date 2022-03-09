@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
@@ -18,31 +19,60 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 import com.kinisi.trailtracker.R
 import java.time.LocalDateTime
 import java.time.LocalTime
-import kotlin.math.sqrt
+import kotlin.math.*
+import android.R.attr.name
+import android.R.attr.name
+import android.os.SystemClock
+import android.util.Log
+import android.view.View
+import android.widget.Chronometer
 
-class Speedometer: AppCompatActivity() {
+
+class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
     private val INTERVAL: Long = 2000
     private val FASTEST_INTERVAL: Long = 1000
     lateinit var mLastLocation: Location
     internal lateinit var mLocationRequest: LocationRequest
     private val REQUEST_PERMISSION_LOCATION = 10
-    var init_Lat = 0.0;
-    var init_long = 0.0;
+    var init_Lat = 0.0
+    var init_long = 0.0
+    var deltaLngMeters = 0.0
+    var deltaLatMeters = 0.0
+    var marker = LatLng(0.0,0.0)
+    var i = 0
+    var x = 0
     lateinit var btnStartupdate: Button
     lateinit var btnStopUpdates: Button
     lateinit var txtLat: TextView
     lateinit var txtLong: TextView
     lateinit var txtTime: TextView
     lateinit var txtDistance: TextView
-    //lateinit var txtSpeed: TextView
-
-    var current = 0;
+    lateinit var txtSpeed: TextView
+    var previousLocation: Location? = null
+    private lateinit var mMap: GoogleMap
+    var current = 0
+    var locations: ArrayList<LatLng> = ArrayList()
+    var count = 0
+    private var polyline: Polyline? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -54,14 +84,14 @@ class Speedometer: AppCompatActivity() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             maxWaitTime= 100
         }
-
         btnStartupdate = findViewById(R.id.btn_start_upds)
         btnStopUpdates = findViewById(R.id.btn_stop_upds)
         txtLat = findViewById(R.id.txtLat)
         txtLong = findViewById(R.id.txtLong)
-        txtTime = findViewById(R.id.txtTime)
+        //txtTime = findViewById(R.id.txtTime)
         txtDistance = findViewById(R.id.txtDistance)
-        //txtSpeed.text = "0"
+        txtSpeed = findViewById(R.id.txtSpeed)
+
 
 
 
@@ -76,15 +106,27 @@ class Speedometer: AppCompatActivity() {
                 startLocationUpdates()
                 btnStartupdate.isEnabled = false
                 btnStopUpdates.isEnabled = true
+                val simpleChronometer = findViewById(R.id.simpleChronometer) as Chronometer
+                simpleChronometer.setBase(SystemClock.elapsedRealtime())
+                simpleChronometer.start()
+                simpleChronometer.setFormat("Timer:   %s")
+                simpleChronometer.start()
             }
         }
 
         btnStopUpdates.setOnClickListener {
             stoplocationUpdates()
-            txtTime.text = "Updates Stopped"
+            // txtTime.text = "Updates Stopped"
             btnStartupdate.isEnabled = true
             btnStopUpdates.isEnabled = false
+            val simpleChronometer = findViewById(R.id.simpleChronometer) as Chronometer
+            simpleChronometer.stop()
+
         }
+
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
     }
     fun checkPermissionForLocation(context: Context): Boolean {
@@ -116,8 +158,6 @@ class Speedometer: AppCompatActivity() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onLocationResult(locationResult: LocationResult) {
             // do work here
-            init_Lat = locationResult.lastLocation.latitude
-            init_long = locationResult.lastLocation.longitude
             locationResult.lastLocation
             onLocationChanged(locationResult.lastLocation)
         }
@@ -125,28 +165,46 @@ class Speedometer: AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun onLocationChanged(location: Location) {
-        // New location has now been determined
-        val next = System.currentTimeMillis().toInt()
-        val deltaTime = 5.0//(current-next)
-        mLastLocation = location
-        val deltaLatMeters = 10.0//mLastLocation.latitude - init_Lat
-        val deltaLngMeters = 15.0//mLastLocation.longitude - init_long
-        val date: Date = Calendar.getInstance().time
+        // New location has now been determined\
+        if (x ==0)
+        {
+            init_Lat = location.latitude
+            init_long = location.longitude
+            x++
+        }
+        deltaLatMeters = location.latitude - init_Lat
+        deltaLngMeters = location.longitude - init_long
+        val date: Date = (Calendar.getInstance().time)
         val sdf = SimpleDateFormat("hh:mm:ss a")
-        txtTime.text = "Updated at : " + sdf.format(date)
-        txtLat.text = "LATITUDE : " + mLastLocation.latitude
-        txtLong.text = "LONGITUDE : " + mLastLocation.longitude
+        //txtTime.text = "Updated at : " + sdf.format(date)
+        txtLat.text = "LATITUDE : " + location.latitude
+        txtLong.text = "LONGITUDE : " + location.longitude
+        var distance = truncate((sqrt((deltaLngMeters*deltaLngMeters) + (deltaLatMeters*deltaLatMeters))*11000.57))
+        txtDistance.text = "Distance " + distance/100 + "km"
+        var speed = truncate((location.getSpeed()) *360)
+        txtSpeed.text = "Speed " + speed/100 +"km/h"
+        if (i ==0)
+        {
+            marker = LatLng(location.latitude, location.longitude)
+            mMap.addMarker(MarkerOptions().position(marker))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 15F))
+            i++
+        }
+        var latLng = LatLng(location.latitude, location.longitude)
+        locations.add(latLng)
+        mMap.addPolyline(PolylineOptions().color(Color.RED).addAll(locations))
 
-        var distance = (sqrt((deltaLngMeters*deltaLngMeters) + (deltaLatMeters*deltaLatMeters))/1000)
-        txtDistance.text = "Distance " + (sqrt((deltaLngMeters*deltaLngMeters) + (deltaLatMeters*deltaLatMeters))/1000)
-        //txtSpeed.text = (distance/deltaTime).toString()
-        current = System.currentTimeMillis().toInt()
+
+
+
+
+
+        count++
+
 
 
     }
-
     protected fun startLocationUpdates() {
-
         // Create the location request to start receiving updates
         mLocationRequest = LocationRequest.create().apply {
             interval = 100
@@ -179,6 +237,7 @@ class Speedometer: AppCompatActivity() {
 
     private fun stoplocationUpdates() {
         mFusedLocationProviderClient!!.removeLocationUpdates(mLocationCallback)
+
     }
 
     private fun buildAlertMessageNoGps() {
@@ -200,6 +259,10 @@ class Speedometer: AppCompatActivity() {
 
     }
 
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
 
+
+    }
 
 }

@@ -8,15 +8,21 @@
     android:orientation="vertical"
     tools:context=".ui.search.Speedometer">
 
-    <in.unicodelabs.kdgaugeview.KdGaugeView
-        android:id="@+id/speedMeter"
-        android:layout_width="255dp"
-        android:layout_height="255dp"
-        android:layout_gravity="center"
-        app:speedLimitTextSize="4dp"
-        app:speedDialRingWidth="4dp"
-        app:speed= "3.6"
-        app:speed_limit="75" />
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/rcv"
+        tools:context=".MainActivityy" />
     <Button
         android:id="@+id/btn_start_upds"
         android:layout_width="match_parent"
@@ -32,7 +38,17 @@
         android:layout_marginRight="12dp"
         android:layout_marginLeft="12dp"
         android:layout_height="wrap_content"
-        android:text="Stop Activity" />
+        android:text="End Activity" />
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtSpeed" />
 
 
     <TextView
@@ -56,6 +72,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtLong"
         />
+    <Chronometer
+        android:id="@+id/simpleChronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"/>
+
     <TextView
         android:layout_gravity="center_horizontal"
         android:padding="12dp"
