@@ -64,8 +64,6 @@ class HomeFragment : Fragment() {
     private fun setLineChart( bChart:BarChart, lChart:LineChart) {
 
        // var title = "Bar Chart"
-        println("CHART: "+ bChart)
-
 
         //x values
         val labels = ArrayList<String>()
@@ -93,7 +91,6 @@ class HomeFragment : Fragment() {
         set.setColor(resources.getColor(R.color.purple_200))
         val data = BarData(set)
         data.barWidth = 0.9f // set custom bar width
-        println(data.dataSets)
         bChart.data = data
 
         //        hide grid lines
@@ -175,9 +172,6 @@ class HomeFragment : Fragment() {
         lEntries.add(Entry(28f, 6.8f))
         lEntries.add(Entry(29f, 6.5f))
         lEntries.add(Entry(30f, 7.0f))
-
-
-        print("entries:$lEntries")
 
         //line data set
         val lSet = LineDataSet(lEntries, "LineDataSet")
