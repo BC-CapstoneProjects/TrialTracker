@@ -64,6 +64,11 @@
             android:name=".ui.profile.Stats"
             android:exported="false"
             android:label="stats"/>
+        <activity
+            android:name=".ui.profile.ReviewsActivity"
+            android:exported="false"
+            android:label="Reviews">
+        </activity>
     </application>
 
 </manifest>
