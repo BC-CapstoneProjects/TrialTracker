@@ -7,45 +7,30 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kinisi.trailtracker.R
+import java.net.URL
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var itemTitle: TextView
-        var itemType: TextView
-        var itemDesc: TextView
+         var itemTitle: TextView = itemView.findViewById(R.id.title)
+         var itemType: TextView = itemView.findViewById(R.id.type)
+         var itemDesc: TextView = itemView.findViewById(R.id.description)
 
-        init {
-            itemTitle = itemView.findViewById(R.id.title)
-            itemType = itemView.findViewById(R.id.type)
-            itemDesc = itemView.findViewById(R.id.description)
-/*
-            itemView.setOnClickListener {
-                var position: Int = getAdapterPosition()
-                val context = itemView.context
-                val intent = Intent(context, DetailPertanyaan::class.java).apply {
-                    putExtra("NUMBER", position)
-                    putExtra("CODE", itemKode.text)
-                    putExtra("CATEGORY", itemKategori.text)
-                    putExtra("CONTENT", itemIsi.text)
-                }
-                context.startActivity(intent)
-            }*/
-        }
     }
 
-    private val title = arrayOf("Rocky Mountain",
-        "Coulon Park", "Margrette's Way",
+    private val title1 = arrayOf("test",
+        "test Park", "test's Way",
         "Red Rock Trail", "Andes Hike",
         "Golden Fountain Park", "Alki Beach")
 
-    private val type = arrayOf("National Park",
+    private val type1 = arrayOf("National Park",
         "Park", "Trail",
         "Trail", "Trail",
         "Park", "Beach")
 
-    private val description = arrayOf("item 1",
+    private val description1 = arrayOf("item 1",
         "item 2", "item 3",
         "item 4", "item 5",
         "item 6", "item 7")
@@ -58,13 +43,13 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.itemTitle.text = title[i]
-        viewHolder.itemType.text = type[i]
-        viewHolder.itemDesc.text = description[i]
+        viewHolder.itemTitle.text = title1[i]
+        viewHolder.itemType.text = type1[i]
+        viewHolder.itemDesc.text = description1[i]
 
     }
 
     override fun getItemCount(): Int {
-        return title.size
+        return title1.size
     }
 }
