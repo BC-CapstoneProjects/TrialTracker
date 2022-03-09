@@ -76,7 +76,6 @@ class UpdateProfile : AppCompatActivity() {
                 sex = radioButton.text.toString()
             }
 
-
             if(name==""||height==""||weight==""){
                 Toast.makeText(this, "Error: Please enter all values", Toast.LENGTH_SHORT).show()
             }
@@ -108,7 +107,6 @@ class UpdateProfile : AppCompatActivity() {
                         }
                 }
             }
-
 
         }
 

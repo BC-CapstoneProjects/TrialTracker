@@ -107,8 +107,3 @@ class Stats: AppCompatActivity () {
 
     }
 }
-
-
-
-
-

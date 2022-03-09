@@ -22,9 +22,6 @@ import com.kinisi.trailtracker.R
 import com.kinisi.trailtracker.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.data.LineData
 
-
-
-
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
@@ -58,7 +55,6 @@ class HomeFragment : Fragment() {
         return root
 
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

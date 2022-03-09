@@ -62,9 +62,6 @@ class ProfileFragment : Fragment() {
             val intent = Intent(context, Stats::class.java)
             startActivity(intent)
         }
-
-
-
         //Brings to UpdateProfile on settings button click
         val settingsBtn: Button = binding.settingsButton
 
