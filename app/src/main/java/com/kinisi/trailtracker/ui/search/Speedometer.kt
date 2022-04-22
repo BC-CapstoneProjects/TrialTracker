@@ -44,6 +44,8 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.Chronometer
+import com.google.firebase.firestore.FieldValue
+import org.osmdroid.util.Distance
 
 
 class Speedometer: AppCompatActivity(), OnMapReadyCallback {
@@ -60,6 +62,8 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     var marker = LatLng(0.0,0.0)
     var i = 0
     var x = 0
+    var distance = 0.0
+    var speed = 0.0f
     lateinit var btnStartupdate: Button
     lateinit var btnStopUpdates: Button
     lateinit var txtLat: TextView
@@ -71,6 +75,9 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     var current = 0
     var locations: ArrayList<LatLng> = ArrayList()
+    var Distance: ArrayList<Double> = ArrayList()
+    var Speed: ArrayList<Float> = ArrayList()
+    var averageSpeed: ArrayList<Float> = ArrayList()
     var count = 0
     private var polyline: Polyline? = null
 
@@ -179,9 +186,9 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         //txtTime.text = "Updated at : " + sdf.format(date)
         txtLat.text = "LATITUDE : " + location.latitude
         txtLong.text = "LONGITUDE : " + location.longitude
-        var distance = truncate((sqrt((deltaLngMeters*deltaLngMeters) + (deltaLatMeters*deltaLatMeters))*11000.57))
+        distance = truncate((sqrt((deltaLngMeters*deltaLngMeters) + (deltaLatMeters*deltaLatMeters))*11000.57))
         txtDistance.text = "Distance " + distance/100 + "km"
-        var speed = truncate((location.getSpeed()) *360)
+        speed = truncate((location.getSpeed()) *360)
         txtSpeed.text = "Speed " + speed/100 +"km/h"
         if (i ==0)
         {
@@ -193,6 +200,9 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         var latLng = LatLng(location.latitude, location.longitude)
         locations.add(latLng)
         mMap.addPolyline(PolylineOptions().color(Color.RED).addAll(locations))
+        setDb()
+        Speed.add(speed/100)
+        averageSpeed.add(Speed.average().toFloat())
 
 
 
@@ -237,6 +247,9 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
 
     private fun stoplocationUpdates() {
         mFusedLocationProviderClient!!.removeLocationUpdates(mLocationCallback)
+        Distance.add(distance/100)
+        setDbDistance()
+        setDbSpeed()
 
     }
 
@@ -258,6 +271,67 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
 
 
     }
+    private fun setDb() {
+        Firebase.firestore
+            .collection("latlng")
+            .document("zCFbt0VMrfJO6shfySvw")
+
+        val userdetail = HashMap<String, Any>()
+        userdetail["latlng"] = locations
+        Firebase.firestore.collection("latlng").document("zCFbt0VMrfJO6shfySvw")
+            .set(userdetail)
+            .addOnSuccessListener { success ->
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Data Failed", "To added because ${exception}")
+            }
+
+
+    }
+
+    private fun setDbDistance(){
+        Firebase.firestore
+            .collection("Distance")
+            .document("YbUImhAapJu1PDkQdzrV")
+
+        val userDistance = HashMap<String, Any>()
+        userDistance["Distance"] = Distance
+        Firebase.firestore.collection("Distance").document("YbUImhAapJu1PDkQdzrV")
+            .set(userDistance)
+            .addOnSuccessListener { success ->
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Data Failed", "To added because ${exception}")
+            }
+
+
+    }
+
+    private fun setDbSpeed(){
+        Firebase.firestore
+            .collection("Speed")
+            .document("0qgrVeUvxOIjbSMu4YRE")
+
+        val userSpeed = HashMap<String, Any>()
+        userSpeed["Speed"] = averageSpeed
+        Firebase.firestore.collection("Speed").document("0qgrVeUvxOIjbSMu4YRE")
+            .set(userSpeed)
+            .addOnSuccessListener { success ->
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Data Failed", "To added because ${exception}")
+            }
+
+
+    }
+
+
+
+
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
