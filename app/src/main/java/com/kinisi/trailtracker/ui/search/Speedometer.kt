@@ -202,7 +202,6 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         mMap.addPolyline(PolylineOptions().color(Color.RED).addAll(locations))
         setDb()
         Speed.add(speed/100)
-        averageSpeed.add(Speed.average().toFloat())
 
 
 
@@ -273,12 +272,12 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     }
     private fun setDb() {
         Firebase.firestore
-            .collection("latlng")
-            .document("zCFbt0VMrfJO6shfySvw")
+            .collection("userActiveLocation")
+            .document("ciJDSJnCFn6yCU9et7qK")
 
         val userdetail = HashMap<String, Any>()
-        userdetail["latlng"] = locations
-        Firebase.firestore.collection("latlng").document("zCFbt0VMrfJO6shfySvw")
+        userdetail["userActiveLocation"] = locations
+        Firebase.firestore.collection("userActiveLocation").document("ciJDSJnCFn6yCU9et7qK")
             .set(userdetail)
             .addOnSuccessListener { success ->
 
@@ -292,12 +291,12 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
 
     private fun setDbDistance(){
         Firebase.firestore
-            .collection("Distance")
-            .document("YbUImhAapJu1PDkQdzrV")
+            .collection("userTotalDistance")
+            .document("ciJDSJnCFn6yCU9et7qK")
 
         val userDistance = HashMap<String, Any>()
-        userDistance["Distance"] = Distance
-        Firebase.firestore.collection("Distance").document("YbUImhAapJu1PDkQdzrV")
+        userDistance["userTotalDistance"] = Distance
+        Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
             .set(userDistance)
             .addOnSuccessListener { success ->
 
@@ -310,13 +309,14 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setDbSpeed(){
+        averageSpeed.add(Speed.average().toFloat())
         Firebase.firestore
-            .collection("Speed")
-            .document("0qgrVeUvxOIjbSMu4YRE")
+            .collection("userAverageSpeed")
+            .document("ciJDSJnCFn6yCU9et7qK")
 
         val userSpeed = HashMap<String, Any>()
-        userSpeed["Speed"] = averageSpeed
-        Firebase.firestore.collection("Speed").document("0qgrVeUvxOIjbSMu4YRE")
+        userSpeed["userAverageSpeed"] = averageSpeed
+        Firebase.firestore.collection("userAverageSpeed").document("ciJDSJnCFn6yCU9et7qK")
             .set(userSpeed)
             .addOnSuccessListener { success ->
 
