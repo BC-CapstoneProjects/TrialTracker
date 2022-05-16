@@ -1,7 +1,9 @@
 package com.kinisi.trailtracker.ui.home
 
+import android.content.ContentValues.TAG
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,11 +23,29 @@ import com.github.mikephil.charting.utils.Utils
 import com.kinisi.trailtracker.R
 import com.kinisi.trailtracker.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.data.LineData
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
+
+import com.google.firebase.firestore.QueryDocumentSnapshot
+
+import com.google.firebase.firestore.QuerySnapshot
+
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.Source
+import org.osmdroid.util.Distance
+
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+    var Distance: java.util.ArrayList<Double> = java.util.ArrayList()
+    var FloatDistance = 0f
+    var FloatDistance2 = 0f
+    var FloatDistance3 = 0f
+    var count = 0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -46,11 +66,7 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
-
-        val lChart: LineChart = binding.progressLineChart
-        val bChart: BarChart = binding.progressBarChart
-
-        setLineChart(bChart,lChart)
+        readDb()
 
         return root
 
@@ -62,9 +78,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setLineChart( bChart:BarChart, lChart:LineChart) {
-
        // var title = "Bar Chart"
-
         //x values
         val labels = ArrayList<String>()
         labels.add("Sunday")
@@ -77,13 +91,13 @@ class HomeFragment : Fragment() {
 
         //y values
         val entries = ArrayList<BarEntry>()//: MutableList<BarEntry> = ArrayList()
-        entries.add(BarEntry(1f, 4.6f))
-        entries.add(BarEntry(2f, 4.0f))
-        entries.add(BarEntry(3f, 5.0f))
-        entries.add(BarEntry(4f, 6.5f))
-        entries.add(BarEntry(5f,6.8f))
-        entries.add(BarEntry(6f, 6.5f))
-        entries.add(BarEntry(7f, 7.0f))
+        entries.add(BarEntry(1f, 0f))
+        entries.add(BarEntry(2f, 0f))
+        entries.add(BarEntry(3f, 0f))
+        entries.add(BarEntry(4f, FloatDistance))
+        entries.add(BarEntry(5f,FloatDistance2))
+        entries.add(BarEntry(6f, FloatDistance3))
+        entries.add(BarEntry(7f, 0f))
 
 
         //bar data set
@@ -139,39 +153,60 @@ class HomeFragment : Fragment() {
         labels2.add("Friday")
         labels2.add("Saturday")
 
-        //y values
+        val docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
+                    FloatDistance = Distance[0].toFloat()
+                    FloatDistance2 = Distance[1].toFloat()
+                    FloatDistance3 = Distance[2].toFloat()
+
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
+
+            //y values
         val lEntries = ArrayList<Entry>()
-        lEntries.add(Entry(0f, 3f))
-        lEntries.add(Entry(1f, 8f))
-        lEntries.add(Entry(2f, 6f))
-        lEntries.add(Entry(3f, 5f))
-        lEntries.add(Entry(4f, 7f))
-        lEntries.add(Entry(5f, 6f))
-        lEntries.add(Entry(6f, 3f))
-        lEntries.add(Entry(7f, 8f))
-        lEntries.add(Entry(8f, 6f))
-        lEntries.add(Entry(9f, 5f))
-        lEntries.add(Entry(10f, 7.0f))
-        lEntries.add(Entry(11f, 6.0f))
-        lEntries.add(Entry(12f, 5.5f))
-        lEntries.add(Entry(13f, 4.5f))
-        lEntries.add(Entry(14f, 3.0f))
-        lEntries.add(Entry(15f, 2.0f))
-        lEntries.add(Entry(16f, 5.0f))
-        lEntries.add(Entry(17f, 5.6f))
-        lEntries.add(Entry(18f, 4.5f))
-        lEntries.add(Entry(19f, 7.5f))
-        lEntries.add(Entry(20f, 6.0f))
-        lEntries.add(Entry(21f, 6.5f))
-        lEntries.add(Entry(22f, 6.2f))
-        lEntries.add(Entry(23f, 5.5f))
-        lEntries.add(Entry(24f, 4.6f))
-        lEntries.add(Entry(25f, 4.0f))
-        lEntries.add(Entry(26f, 5.0f))
-        lEntries.add(Entry(27f, 6.5f))
-        lEntries.add(Entry(28f, 6.8f))
-        lEntries.add(Entry(29f, 6.5f))
-        lEntries.add(Entry(30f, 7.0f))
+        lEntries.add(Entry(0f,0f ))
+        lEntries.add(Entry(1f, 0f))
+        lEntries.add(Entry(2f, 0f))
+        lEntries.add(Entry(3f, 0f))
+        lEntries.add(Entry(4f, 0f))
+        lEntries.add(Entry(5f, 0f))
+        lEntries.add(Entry(6f, 0f))
+        lEntries.add(Entry(7f, 0f))
+        lEntries.add(Entry(8f, 0f))
+        lEntries.add(Entry(9f, 0f))
+        lEntries.add(Entry(10f, 0f))
+        lEntries.add(Entry(11f, 0f))
+        lEntries.add(Entry(12f, 0f))
+        lEntries.add(Entry(13f, 0f))
+        lEntries.add(Entry(14f, FloatDistance))
+        lEntries.add(Entry(15f, FloatDistance2))
+        lEntries.add(Entry(16f, FloatDistance3))
+        lEntries.add(Entry(17f, 0f))
+        lEntries.add(Entry(18f, 0f))
+        lEntries.add(Entry(19f, 0f))
+        lEntries.add(Entry(20f, 0f))
+        lEntries.add(Entry(21f, 0f))
+        lEntries.add(Entry(22f, 0f))
+        lEntries.add(Entry(23f, 0f))
+        lEntries.add(Entry(24f, 0f))
+        lEntries.add(Entry(25f, 0f))
+        lEntries.add(Entry(26f, 0f))
+        lEntries.add(Entry(27f, 0f))
+        lEntries.add(Entry(28f, 0f))
+        lEntries.add(Entry(29f, 0f))
+        lEntries.add(Entry(30f, 0f))
+
+
 
         //line data set
         val lSet = LineDataSet(lEntries, "LineDataSet")
@@ -223,5 +258,30 @@ class HomeFragment : Fragment() {
 
         }
 
+    }
+
+    private fun readDb()
+    {
+        val docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
+                    FloatDistance = Distance[0].toFloat()
+                    FloatDistance2 = Distance[1].toFloat()
+                    FloatDistance3 = Distance[2].toFloat()
+                    val lChart: LineChart = binding.progressLineChart
+                    val bChart: BarChart = binding.progressBarChart
+                    setLineChart(bChart,lChart)
+
+
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
     }
 }

@@ -18,23 +18,30 @@ import android.R.attr.data
 import android.R.attr.data
 import android.R.attr.data
 import android.R.attr.data
+import android.content.ContentValues
 import android.widget.Button
 import android.widget.TextView
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import org.osmdroid.util.Distance
 
 
 class Stats: AppCompatActivity () {
+    var Distance: java.util.ArrayList<Double> = java.util.ArrayList()
+    var FloatDistance = 0f
+    var FloatDistance2 = 0f
+    var FloatDistance3 = 0f
+    var totaldistance = 0f
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stats)
-
-        setBarChart()
+        readDb()
     }
 
     private fun setBarChart() {
-
         title = "Bar Chart"
         val bChart = findViewById<BarChart>(R.id.progressBarChart)
         println(bChart)
@@ -52,18 +59,18 @@ class Stats: AppCompatActivity () {
 
         //y values
         val entries = ArrayList<BarEntry>()//: MutableList<BarEntry> = ArrayList()
-        entries.add(BarEntry(1f, 44f))
-        entries.add(BarEntry(2f, 56f))
-        entries.add(BarEntry(3f, 62f))
-        entries.add(BarEntry(4f, 66f))
-        entries.add(BarEntry(5f, 68f))
-        entries.add(BarEntry(6f, 56f))
-        entries.add(BarEntry(7f, 64f))
-        entries.add(BarEntry(8f, 70f))
-        entries.add(BarEntry(9f, 74f))
-        entries.add(BarEntry(10f, 72f))
-        entries.add(BarEntry(11f, 76f))
-        entries.add(BarEntry(12f, 82f))
+        entries.add(BarEntry(1f, 0f))
+        entries.add(BarEntry(2f, 0f))
+        entries.add(BarEntry(3f, 0f))
+        entries.add(BarEntry(4f, 0f))
+        entries.add(BarEntry(5f, totaldistance))
+        entries.add(BarEntry(6f, 0f))
+        entries.add(BarEntry(7f, 0f))
+        entries.add(BarEntry(8f, 0f))
+        entries.add(BarEntry(9f, 0f))
+        entries.add(BarEntry(10f, 0f))
+        entries.add(BarEntry(11f, 0f))
+        entries.add(BarEntry(12f, 0f))
 
 
         //bar data set
@@ -104,6 +111,29 @@ class Stats: AppCompatActivity () {
         xAxis.setDrawLabels(true)
         xAxis.granularity = 1f
         xAxis.labelRotationAngle = +90f
+
+    }
+
+    private fun readDb()
+    {
+        val docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                    Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
+                    FloatDistance = Distance[0].toFloat()
+                    FloatDistance2 = Distance[1].toFloat()
+                    FloatDistance3 = Distance[2].toFloat()
+                    totaldistance = FloatDistance + FloatDistance2 + FloatDistance3
+                    setBarChart()
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
 
     }
 }
