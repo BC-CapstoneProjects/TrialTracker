@@ -46,7 +46,6 @@ class SearchFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
 
         val sydney = LatLng(47.0, -122.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
 
@@ -95,6 +94,8 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        val mapFragment = childFragmentManager.findFragmentById(com.kinisi.trailtracker.R.id.map) as SupportMapFragment?
+
+        if (mapFragment != null) childFragmentManager.beginTransaction().remove(mapFragment).commitAllowingStateLoss()
     }
 }

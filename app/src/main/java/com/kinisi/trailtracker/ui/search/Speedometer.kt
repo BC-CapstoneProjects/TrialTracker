@@ -40,10 +40,13 @@ import java.time.LocalTime
 import kotlin.math.*
 import android.R.attr.name
 import android.R.attr.name
+import android.content.ContentValues
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.Chronometer
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
 import com.google.firebase.firestore.FieldValue
 import org.osmdroid.util.Distance
 
@@ -78,6 +81,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     var Distance: ArrayList<Double> = ArrayList()
     var Speed: ArrayList<Float> = ArrayList()
     var averageSpeed: ArrayList<Float> = ArrayList()
+    var Distance_arr: ArrayList<Double> = ArrayList()
     var count = 0
     private var polyline: Polyline? = null
 
@@ -215,6 +219,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     }
     protected fun startLocationUpdates() {
         // Create the location request to start receiving updates
+        readDb()
         mLocationRequest = LocationRequest.create().apply {
             interval = 100
             fastestInterval = 50
@@ -247,6 +252,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     private fun stoplocationUpdates() {
         mFusedLocationProviderClient!!.removeLocationUpdates(mLocationCallback)
         Distance.add(distance/100)
+        Distance_arr.add(distance/100)
         setDbDistance()
         setDbSpeed()
 
@@ -290,6 +296,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setDbDistance(){
+
         Firebase.firestore
             .collection("userTotalDistance")
             .document("ciJDSJnCFn6yCU9et7qK")
@@ -297,7 +304,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         val userDistance = HashMap<String, Any>()
         userDistance["userTotalDistance"] = Distance
         Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
-            .set(userDistance)
+            .update(userDistance)
             .addOnSuccessListener { success ->
 
             }
@@ -317,7 +324,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         val userSpeed = HashMap<String, Any>()
         userSpeed["userAverageSpeed"] = averageSpeed
         Firebase.firestore.collection("userAverageSpeed").document("ciJDSJnCFn6yCU9et7qK")
-            .set(userSpeed)
+            .update(userSpeed)
             .addOnSuccessListener { success ->
 
             }
@@ -327,7 +334,42 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
 
 
     }
+    private fun readDb()
+    {
+        var docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                    Distance= document.get("userTotalDistance") as java.util.ArrayList<Double>
 
+
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+
+        docRef =  Firebase.firestore.collection("userAverageSpeed").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                    averageSpeed= document.get("userAverageSpeed") as java.util.ArrayList<Float>
+
+
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+
+
+    }
 
 
 

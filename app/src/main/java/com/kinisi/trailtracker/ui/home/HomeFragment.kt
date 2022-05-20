@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.Source
 import org.osmdroid.util.Distance
+import java.util.HashMap
 
 
 class HomeFragment : Fragment() {
@@ -46,6 +47,7 @@ class HomeFragment : Fragment() {
     var FloatDistance2 = 0f
     var FloatDistance3 = 0f
     var count = 0
+    var initial = 0f
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -66,6 +68,7 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+        setDblog()
         readDb()
 
         return root
@@ -170,10 +173,16 @@ class HomeFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
             }
+        val lEntries = ArrayList<Entry>()
+        for (i in Distance.indices) {
+            FloatDistance = Distance[i].toFloat()
+            lEntries.add(Entry(initial,FloatDistance ))
+            initial+=1f
+        }
 
 
             //y values
-        val lEntries = ArrayList<Entry>()
+        /*val lEntries = ArrayList<Entry>()
         lEntries.add(Entry(0f,0f ))
         lEntries.add(Entry(1f, 0f))
         lEntries.add(Entry(2f, 0f))
@@ -204,7 +213,7 @@ class HomeFragment : Fragment() {
         lEntries.add(Entry(27f, 0f))
         lEntries.add(Entry(28f, 0f))
         lEntries.add(Entry(29f, 0f))
-        lEntries.add(Entry(30f, 0f))
+        lEntries.add(Entry(30f, 0f))*/
 
 
 
@@ -268,9 +277,9 @@ class HomeFragment : Fragment() {
                 if (document != null) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
-                    FloatDistance = Distance[0].toFloat()
-                    FloatDistance2 = Distance[1].toFloat()
-                    FloatDistance3 = Distance[2].toFloat()
+                    /*FloatDistance = Distance[count].toFloat()
+                    FloatDistance2 = Distance[count+1].toFloat()
+                    FloatDistance3 = Distance[count+2].toFloat()*/
                     val lChart: LineChart = binding.progressLineChart
                     val bChart: BarChart = binding.progressBarChart
                     setLineChart(bChart,lChart)
@@ -284,4 +293,41 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "get failed with ", exception)
             }
     }
+
+    private fun setDblog(){
+        var log = (java.sql.Timestamp(System.currentTimeMillis()))
+        Firebase.firestore
+            .collection("userAverageSpeed")
+            .document("ciJDSJnCFn6yCU9et7qK")
+
+        val time = HashMap<String, Any>()
+        time["log"] = log
+        Firebase.firestore.collection("userAverageSpeed").document("ciJDSJnCFn6yCU9et7qK")
+            .update("log",time)
+            .addOnSuccessListener { success ->
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Data Failed", "To added because ${exception}")
+            }
+
+        Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+            .update("log",time)
+            .addOnSuccessListener { success ->
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Data Failed", "To added because ${exception}")
+            }
+        Firebase.firestore.collection("userActiveLocation").document("ciJDSJnCFn6yCU9et7qK")
+            .update("log",time)
+            .addOnSuccessListener { success ->
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Data Failed", "To added because ${exception}")
+            }
+
+    }
+
 }
