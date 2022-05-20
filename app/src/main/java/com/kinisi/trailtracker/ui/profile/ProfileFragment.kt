@@ -1,7 +1,6 @@
 package com.kinisi.trailtracker.ui.profile
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,16 @@ import com.kinisi.trailtracker.R
 import com.kinisi.trailtracker.databinding.FragmentHomeBinding
 import com.kinisi.trailtracker.databinding.FragmentProfileBinding
 import android.widget.Button
-import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.kinisi.trailtracker.MainActivity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.os.Bundle
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
@@ -73,12 +77,35 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
+        val shareBtn: Button = binding.settingsButton
+        shareBtn.setOnClickListener {
+            copyTextToClipboard()
+            pasteTextFromClipboard()
+        }
+
         return root
     }
 
+    private fun copyTextToClipboard() {
+        var textToCopy = "Hello World"
+        val clipboardManager = context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("text", textToCopy)
+        clipboardManager.setPrimaryClip(clipData)
+     //   Toast.makeText(this, "Text copied to clipboard", Toast.LENGTH_LONG).show()
+    }
+
+    private fun pasteTextFromClipboard() {
+        val clipboardManager = context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        var textToPaste = clipboardManager.primaryClip?.getItemAt(0)?.text
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-   }
+//        shareButton.setOnClickListener {
+//            copyTextToClipboard()
+//        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="History"
-        app:layout_constraintBottom_toTopOf="@+id/settingsButton"
+        app:layout_constraintBottom_toTopOf="@+id/shareButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,15 +74,28 @@
         app:layout_constraintVertical_bias="0.464" />
 
     <Button
+        android:id="@+id/shareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Share"
+        app:layout_constraintBottom_toTopOf="@+id/settingsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyButton"
+        app:layout_constraintVertical_bias="0.464" />
+
+    <Button
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="268dp"
+        android:layout_marginBottom="200dp"
         android:text="Settings"
         app:layout_constraintBottom_toTopOf="@+id/text_profile"
         app:layout_constraintEnd_toEndOf="@+id/text_profile"
         app:layout_constraintStart_toStartOf="@+id/text_profile"
-        app:layout_constraintTop_toBottomOf="@+id/historyButton" />
+        app:layout_constraintTop_toBottomOf="@+id/shareButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
