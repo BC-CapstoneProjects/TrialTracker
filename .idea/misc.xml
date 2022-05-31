@@ -20,7 +20,7 @@
         <entry key="app/src/main/res/layout/activity_speedometer.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_update_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_welcome_screen.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favorites2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.125" />

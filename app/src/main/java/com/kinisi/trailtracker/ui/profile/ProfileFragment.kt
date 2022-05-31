@@ -18,13 +18,18 @@ import androidx.fragment.app.FragmentManager
 import com.kinisi.trailtracker.MainActivity
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import org.osmdroid.util.Distance
 
 class ProfileFragment : Fragment() {
 
@@ -34,6 +39,11 @@ class ProfileFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    var Distance: java.util.ArrayList<Double> = java.util.ArrayList()
+    var FloatDistance = 0f
+    var FloatDistance2 = 0f
+    var FloatDistance3 = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +57,7 @@ class ProfileFragment : Fragment() {
         val root: View = binding.root
 
         //Brings to reviews activity on review button click
-        val reviewBtn: Button = binding.reviewsButton
+    /*    val reviewBtn: Button = binding.reviewsButton
 
         reviewBtn.setOnClickListener {
             val intent = Intent(context, ReviewsActivity::class.java)
@@ -61,7 +71,7 @@ class ProfileFragment : Fragment() {
             val intent = Intent(context, HistoryActivity::class.java)
             startActivity(intent)
         }
-
+*/
         //Brings to Stats activity on stats button click
         val statsBtn: Button = binding.statsButton
 
@@ -77,34 +87,51 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
-        val shareBtn: Button = binding.settingsButton
+        val shareBtn: Button = binding.shareButton
         shareBtn.setOnClickListener {
             copyTextToClipboard()
             pasteTextFromClipboard()
         }
-
         return root
     }
 
     private fun copyTextToClipboard() {
-        var textToCopy = "Hello World"
-        val clipboardManager = context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("text", textToCopy)
+        val docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
+                    FloatDistance = Distance[0].toFloat()
+                    FloatDistance2 = Distance[1].toFloat()
+
+                    FloatDistance3 = Distance[2].toFloat()
+
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
+      //  var textToCopy = "Test Clip"
+        val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        var clipData = ClipData.newPlainText("simple text", "Total Distance: " + FloatDistance.toString())
+       // val clip: ClipData = ClipData.newPlainText("simple text", "Hello, World!")
         clipboardManager.setPrimaryClip(clipData)
-     //   Toast.makeText(this, "Text copied to clipboard", Toast.LENGTH_LONG).show()
     }
 
     private fun pasteTextFromClipboard() {
-        val clipboardManager = context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        var textToPaste = clipboardManager.primaryClip?.getItemAt(0)?.text
+        var pasteData: String = ""
+        val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        var item = clipboardManager.primaryClip?.getItemAt(0)?.text
+        pasteData = item as String
+        print(pasteData)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        shareButton.setOnClickListener {
-//            copyTextToClipboard()
-//        }
     }
 
     override fun onDestroyView() {
