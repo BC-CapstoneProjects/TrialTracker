@@ -85,6 +85,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     var count = 0
     private var polyline: Polyline? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -102,6 +103,11 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         //txtTime = findViewById(R.id.txtTime)
         txtDistance = findViewById(R.id.txtDistance)
         txtSpeed = findViewById(R.id.txtSpeed)
+
+
+        var startTime = LocalTime.MAX
+        var stopTime = LocalTime.MAX
+        var durationTime = LocalTime.MIN
 
 
 
@@ -122,6 +128,8 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
                 simpleChronometer.start()
                 simpleChronometer.setFormat("Timer:   %s")
                 simpleChronometer.start()
+                startTime=LocalTime.now()
+
             }
         }
 
@@ -132,6 +140,10 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
             btnStopUpdates.isEnabled = false
             val simpleChronometer = findViewById(R.id.simpleChronometer) as Chronometer
             simpleChronometer.stop()
+            stopTime=LocalTime.now()
+
+            durationTime= stopTime.minusHours(startTime.hour.toLong()).minusMinutes(startTime.minute.toLong()).minusSeconds(startTime.second.toLong())
+            calcCals(durationTime)
 
         }
 
@@ -372,7 +384,103 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calcCals(durationTime: LocalTime){
+        //CALORIE CALCULATOR
 
+        val db=Firebase.firestore
+        lateinit var auth: FirebaseAuth
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+        val userId = user?.uid
+
+        var speed: Double
+        var duration : Double
+
+        speed = Speed.average().toDouble()
+        duration = 40.0 //get activity duration from Firebase
+        Log.d("SPEED",speed.toString())
+        duration = timeToMinutes(durationTime)
+        Log.d("DURATION: ", duration.toString())
+
+
+
+
+
+        val userInfoDocRef = Firebase.firestore
+            .collection(("users").toString()).document(userId.toString())
+        userInfoDocRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot user info data: ${document.data}")
+
+                    val userinfo = document.get(userId.toString())
+                    val weightKG =
+                        (document.get("weight").toString().toInt().times(0.45359237)
+                            .times(100)).roundToInt() / 100.0
+                    Log.d("WEIGHT", weightKG.toString())
+
+                    // METS X 3.5 X BW (KG) / 200 = KCAL/MIN.
+                    val METS = mapOf<Double, Double>( //SPEED(mph) TO MET VALUE
+                        0.0 to 0.0,
+                        2.0 to 2.0,
+                        3.0 to 3.0,
+                        3.5 to 4.5,
+                        4.0 to 6.0,
+                        5.0 to 8.3,
+                        5.2 to 9.0,
+                        6.0 to 9.8,
+                        6.7 to 10.5,
+                        7.0 to 11.0,
+                        7.5 to 11.5,
+                        8.0 to 11.8,
+                        8.6 to 12.3,
+                        9.0 to 12.8,
+                        10.0 to 14.5,
+                        11.0 to 16.0,
+                        12.0 to 19.0,
+                        13.0 to 19.8,
+                        14.0 to 23.0
+                    )
+
+                    var MET = 0.0
+
+                    if (METS.containsKey(speed)) {
+                        MET = METS.get(speed)!!
+                    } else {
+                        //Find closest MET for user's speed
+                        var min = Double.MAX_VALUE
+                        for (entry in METS.entries.iterator()) {
+                            val diff = Math.abs(entry.key - speed)
+                            if (diff < min) {
+                                min = diff;
+                                MET = entry.value
+                            }
+
+                        }
+                    }
+                    Log.d("MET: ", MET.toString())
+
+                    val TotalCaloriesBurned =
+                        (MET * 3.5 * weightKG / 200 * duration).toInt()
+                    Log.d("Calories Burned: ", TotalCaloriesBurned.toString())
+
+
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun timeToMinutes(t: LocalTime):Double{
+        var duration :Double
+        duration=(t.hour*60).toDouble()+ (t.minute).toDouble()+(t.second/60).toDouble()
+        return duration
+    }
 
 
     override fun onMapReady(googleMap: GoogleMap) {
