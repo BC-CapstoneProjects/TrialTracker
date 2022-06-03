@@ -72,6 +72,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     lateinit var txtLat: TextView
     lateinit var txtLong: TextView
     lateinit var txtTime: TextView
+    lateinit var txtCalories: TextView
     lateinit var txtDistance: TextView
     lateinit var txtSpeed: TextView
     var previousLocation: Location? = null
@@ -103,6 +104,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         //txtTime = findViewById(R.id.txtTime)
         txtDistance = findViewById(R.id.txtDistance)
         txtSpeed = findViewById(R.id.txtSpeed)
+        txtCalories = findViewById(R.id.txtCalories)
 
 
         var startTime = LocalTime.MAX
@@ -143,7 +145,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
             stopTime=LocalTime.now()
 
             durationTime= stopTime.minusHours(startTime.hour.toLong()).minusMinutes(startTime.minute.toLong()).minusSeconds(startTime.second.toLong())
-            calcCals(durationTime)
+            txtCalories.text = ("Calories Burned: "+ calcCals(durationTime).toString())
 
         }
 
@@ -385,7 +387,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun calcCals(durationTime: LocalTime){
+    private fun calcCals(durationTime: LocalTime):Int{
         //CALORIE CALCULATOR
 
         val db=Firebase.firestore
@@ -396,6 +398,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
 
         var speed: Double
         var duration : Double
+        var TotalCaloriesBurned=0
 
         speed = Speed.average().toDouble()
         duration = 40.0 //get activity duration from Firebase
@@ -461,7 +464,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
                     }
                     Log.d("MET: ", MET.toString())
 
-                    val TotalCaloriesBurned =
+                    TotalCaloriesBurned =
                         (MET * 3.5 * weightKG / 200 * duration).toInt()
                     Log.d("Calories Burned: ", TotalCaloriesBurned.toString())
 
@@ -473,6 +476,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
             .addOnFailureListener { exception ->
                 Log.d(ContentValues.TAG, "get failed with ", exception)
             }
+        return TotalCaloriesBurned;
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

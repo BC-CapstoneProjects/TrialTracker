@@ -253,9 +253,9 @@ class HomeFragment : Fragment() {
 
             //remove legend
 
-            if (lChart != null) {
-                lChart.animateX(1000, Easing.EaseInSine)
-            }
+//            if (lChart != null) {
+//                lChart.animateX(1000, Easing.EaseInSine)
+//            }
 
 //        lChart.legend.isEnabled = false
 
