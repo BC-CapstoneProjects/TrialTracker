@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
-//change 'user' to name after updated profile settings
+//TODO: Include name in welcome message after updated profile settings
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "Welcome Back!"
     }
     val text: LiveData<String> = _text
 }
