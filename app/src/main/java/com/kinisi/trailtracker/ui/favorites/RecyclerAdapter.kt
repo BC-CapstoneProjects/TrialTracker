@@ -1,15 +1,25 @@
 package com.kinisi.trailtracker.ui.favorites
 
+import android.content.ContentValues
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
+import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.kinisi.trailtracker.R
+import org.osmdroid.util.Distance
 import java.net.URL
+import java.util.ArrayList
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+    var Distance: java.util.ArrayList<String> = java.util.ArrayList()
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,20 +30,17 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     }
 
-    private val title1 = arrayOf("test",
-        "test Park", "test's Way",
-        "Red Rock Trail", "Andes Hike",
-        "Golden Fountain Park", "Alki Beach")
 
-    private val type1 = arrayOf("National Park",
-        "Park", "Trail",
-        "Trail", "Trail",
-        "Park", "Beach")
 
-    private val description1 = arrayOf("item 1",
-        "item 2", "item 3",
-        "item 4", "item 5",
-        "item 6", "item 7")
+    private val type1 = arrayOf("",
+        "", "",
+        "", "",
+        "", "")
+
+    private val description1 = arrayOf("",
+        "", "",
+        "", "",
+        "", "")
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -43,13 +50,31 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.itemTitle.text = title1[i]
+
+            val docRef =  Firebase.firestore.collection("UserFavTrails").document("ciJDSJnCFn6yCU9et7qK")
+            docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                        Distance = document.get("UserFavTrails") as java.util.ArrayList<String>
+                        viewHolder.itemTitle.text = Distance[i]
+
+                    } else {
+                        Log.d(ContentValues.TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(ContentValues.TAG, "get failed with ", exception)
+                }
+
         viewHolder.itemType.text = type1[i]
         viewHolder.itemDesc.text = description1[i]
 
     }
 
     override fun getItemCount(): Int {
-        return title1.size
+        return 5
     }
+
+
 }

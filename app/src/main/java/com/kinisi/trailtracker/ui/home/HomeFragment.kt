@@ -35,7 +35,8 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.Source
 import org.osmdroid.util.Distance
-import java.util.HashMap
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
@@ -81,8 +82,63 @@ class HomeFragment : Fragment() {
     }
 
     private fun setLineChart( bChart:BarChart, lChart:LineChart) {
-       // var title = "Bar Chart"
+        // var title = "Bar Chart"
         //x values
+        var initialday = 0f
+        val cal: Calendar = Calendar.getInstance()
+        val dayOfMonth: Int = cal.get(Calendar.DAY_OF_MONTH)
+        val day: Int = cal.get(Calendar.DAY_OF_WEEK)
+        when (day) {
+            Calendar.MONDAY -> {initialday = 1f}
+            Calendar.TUESDAY -> {initialday = 2f}
+            Calendar.WEDNESDAY -> {initialday = 3f}
+            Calendar.THURSDAY -> {initialday = 4f}
+            Calendar.FRIDAY -> {initialday = 5f}
+            Calendar.SATURDAY -> {initialday = 6f}
+            Calendar.SUNDAY -> {initialday = 7f}
+        }
+
+        val dayOfMonthStr = dayOfMonth.toFloat()
+        var initial = dayOfMonthStr-6
+        val docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
+                    FloatDistance = Distance[0].toFloat()
+                    FloatDistance2 = Distance[1].toFloat()
+                    FloatDistance3 = Distance[2].toFloat()
+
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+        val lEntries = ArrayList<Entry>()
+        for (i in 1..dayOfMonth) {
+            FloatDistance = Distance[i].toFloat()
+            lEntries.add(Entry(i.toFloat(),FloatDistance ))
+            initial+=1f
+        }
+        if (dayOfMonth!=31){
+            for (i in dayOfMonth+1..31) {
+                lEntries.add(Entry(i.toFloat(),0f ))
+            }
+        }
+        val entries = ArrayList<BarEntry>()
+        for (x in 1..initialday.toInt()) {
+            FloatDistance = Distance[x].toFloat()
+            entries.add(BarEntry(x.toFloat(), FloatDistance))
+            initialday+=1f
+        }
+        if (day!=7){
+            for (i in day+1..7) {
+                entries.add(BarEntry(i.toFloat(), 0f))
+            }
+        }
         val labels = ArrayList<String>()
         labels.add("Sunday")
         labels.add("Monday")
@@ -93,14 +149,14 @@ class HomeFragment : Fragment() {
         labels.add("Saturday")
 
         //y values
-        val entries = ArrayList<BarEntry>()//: MutableList<BarEntry> = ArrayList()
-        entries.add(BarEntry(1f, 0f))
-        entries.add(BarEntry(2f, 0f))
-        entries.add(BarEntry(3f, 0f))
-        entries.add(BarEntry(4f, FloatDistance))
-        entries.add(BarEntry(5f,FloatDistance2))
-        entries.add(BarEntry(6f, FloatDistance3))
-        entries.add(BarEntry(7f, 0f))
+        //val entries = ArrayList<BarEntry>()//: MutableList<BarEntry> = ArrayList()
+        /*entries.add(BarEntry(1f, FloatDistance))
+        entries.add(BarEntry(2f, FloatDistance2))
+        entries.add(BarEntry(3f, FloatDistance3))
+        entries.add(BarEntry(4f, 0f))
+        entries.add(BarEntry(5f,0f))
+        entries.add(BarEntry(6f, 0f))
+        entries.add(BarEntry(7f, 0f))*/
 
 
         //bar data set
@@ -156,32 +212,10 @@ class HomeFragment : Fragment() {
         labels2.add("Friday")
         labels2.add("Saturday")
 
-        val docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
-                    FloatDistance = Distance[0].toFloat()
-                    FloatDistance2 = Distance[1].toFloat()
-                    FloatDistance3 = Distance[2].toFloat()
-
-                } else {
-                    Log.d(TAG, "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-        val lEntries = ArrayList<Entry>()
-        for (i in Distance.indices) {
-            FloatDistance = Distance[i].toFloat()
-            lEntries.add(Entry(initial,FloatDistance ))
-            initial+=1f
-        }
 
 
-            //y values
+
+        //y values
         /*val lEntries = ArrayList<Entry>()
         lEntries.add(Entry(0f,0f ))
         lEntries.add(Entry(1f, 0f))
@@ -236,7 +270,7 @@ class HomeFragment : Fragment() {
                 lChart.axisLeft.setDrawGridLines(false)
                 val xAxis: XAxis = lChart.xAxis
                 xAxis.setDrawGridLines(false)
-               // xAxis.setDrawAxisLine(false)
+                // xAxis.setDrawAxisLine(false)
 
                 // to draw label on xAxis
                 xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -253,9 +287,9 @@ class HomeFragment : Fragment() {
 
             //remove legend
 
-//            if (lChart != null) {
-//                lChart.animateX(1000, Easing.EaseInSine)
-//            }
+            if (lChart != null) {
+                lChart.animateX(1000, Easing.EaseInSine)
+            }
 
 //        lChart.legend.isEnabled = false
 

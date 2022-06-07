@@ -49,6 +49,8 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.google.firebase.firestore.FieldValue
 import org.osmdroid.util.Distance
+import android.provider.Settings.Secure
+import java.security.AccessController.getContext
 
 
 class Speedometer: AppCompatActivity(), OnMapReadyCallback {
@@ -85,6 +87,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
     var Distance_arr: ArrayList<Double> = ArrayList()
     var count = 0
     private var polyline: Polyline? = null
+    /*val id: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)*/
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?)
