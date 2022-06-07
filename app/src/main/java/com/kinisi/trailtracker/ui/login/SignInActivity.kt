@@ -26,10 +26,13 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.kinisi.trailtracker.databinding.ActivitySignInBinding
 import com.google.firebase.ktx.Firebase
 import com.kinisi.trailtracker.MainActivity
 import com.kinisi.trailtracker.R
+import java.util.ArrayList
+import java.util.HashMap
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
@@ -55,7 +58,6 @@ class SignInActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-
         // If there is no signed in user, launch FirebaseUI
         // Otherwise head to MainActivity
         if (Firebase.auth.currentUser == null) {
@@ -70,8 +72,8 @@ class SignInActivity : AppCompatActivity() {
                     AuthUI.IdpConfig.GoogleBuilder().build(),
                 ))
                 .build()
-
             signIn.launch(signInIntent)
+
         } else {
             goToMainActivity()
         }
@@ -108,4 +110,6 @@ class SignInActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "SignInActivity"
     }
+
+
 }
