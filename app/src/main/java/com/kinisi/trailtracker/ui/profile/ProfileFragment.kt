@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
+import com.github.mikephil.charting.data.Entry
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.*
@@ -41,7 +42,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     var Distance: java.util.ArrayList<Double> = java.util.ArrayList()
-    var FloatDistance = 0f
+    var FloatDistance = 7f
     var FloatDistance2 = 0f
     var FloatDistance3 = 0f
 
@@ -102,10 +103,10 @@ class ProfileFragment : Fragment() {
                 if (document != null) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
-                    FloatDistance = Distance[0].toFloat()
-                    FloatDistance2 = Distance[1].toFloat()
+                    val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    var clipData = ClipData.newPlainText("simple text", "I just traveled: " + Distance[0] + "")
+                    clipboardManager.setPrimaryClip(clipData)
 
-                    FloatDistance3 = Distance[2].toFloat()
 
                 } else {
                     Log.d(TAG, "No such document")
@@ -115,11 +116,8 @@ class ProfileFragment : Fragment() {
                 Log.d(TAG, "get failed with ", exception)
             }
 
-      //  var textToCopy = "Test Clip"
-        val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        var clipData = ClipData.newPlainText("simple text", "Total Distance: " + FloatDistance.toString())
-       // val clip: ClipData = ClipData.newPlainText("simple text", "Hello, World!")
-        clipboardManager.setPrimaryClip(clipData)
+
+
     }
 
     private fun pasteTextFromClipboard() {

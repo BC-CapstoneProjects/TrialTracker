@@ -63,8 +63,8 @@ class Stats: AppCompatActivity () {
         entries.add(BarEntry(2f, 0f))
         entries.add(BarEntry(3f, 0f))
         entries.add(BarEntry(4f, 0f))
-        entries.add(BarEntry(5f, totaldistance))
-        entries.add(BarEntry(6f, 0f))
+        entries.add(BarEntry(5f, 0f))
+        entries.add(BarEntry(6f, totaldistance))
         entries.add(BarEntry(7f, 0f))
         entries.add(BarEntry(8f, 0f))
         entries.add(BarEntry(9f, 0f))
@@ -122,10 +122,8 @@ class Stats: AppCompatActivity () {
                 if (document != null) {
                     Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
                     Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
-                    FloatDistance = Distance[0].toFloat()
-                    FloatDistance2 = Distance[1].toFloat()
-                    FloatDistance3 = Distance[2].toFloat()
-                    totaldistance = FloatDistance + FloatDistance2 + FloatDistance3
+                    FloatDistance = Distance.sum().toFloat()
+                    totaldistance = FloatDistance
                     setBarChart()
                 } else {
                     Log.d(ContentValues.TAG, "No such document")
