@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kinisi.trailtracker.MainActivity
 import com.kinisi.trailtracker.R
 import com.kinisi.trailtracker.models.DataModel
+import com.kinisi.trailtracker.models.SearchModel
 import com.kinisi.trailtracker.ui.newactivity.RecyclerAdapter
+import java.util.ArrayList
 
 class RecyclerAdapter(
-    private val dataModel: ArrayList<DataModel>
+    private val dataModel: ArrayList<SearchModel>
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,7 +37,7 @@ class RecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
         viewHolder.itemTitle.text = dataModel[position].title
-        viewHolder.itemType.text = dataModel[position].dist.toString()
+        // viewHolder.itemType.text = dataModel[position].dist.toString()
         viewHolder.itemDesc.text = dataModel[position].type
     }
 
