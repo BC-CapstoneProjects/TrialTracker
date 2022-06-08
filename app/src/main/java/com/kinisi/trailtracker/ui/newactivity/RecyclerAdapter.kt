@@ -32,8 +32,6 @@ class RecyclerAdapter(
 
 
             itemView.setOnClickListener {
-                var position: Int = getAdapterPosition()
-                println(itemTitle)
                 val context = itemView.context
                 val gmmIntentUri = Uri.parse("geo:0,0?q=${itemTitle.text}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)

@@ -3,6 +3,8 @@ package com.kinisi.trailtracker.ui.newactivity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -48,13 +50,27 @@ class NewActivityFragment : Fragment() {
         searchButton.setOnClickListener {
             execQuery(editText.getText().toString())
         }
-        editText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        /*editText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 // Toast.makeText(requireActivity(), "Great success", Toast.LENGTH_SHORT).show()
                 execQuery(editText.getText().toString())
                 return@OnKeyListener true
             }
             false
+        })*/
+        editText.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                execQuery(editText.getText().toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
         })
         var tmpArr: ArrayList<SearchModel> = ArrayList()
         super.onViewCreated(itemView, savedInstanceState)
