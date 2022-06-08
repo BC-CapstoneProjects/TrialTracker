@@ -3,6 +3,8 @@ package com.kinisi.trailtracker.ui.newactivity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -48,13 +50,27 @@ class NewActivityFragment : Fragment() {
         searchButton.setOnClickListener {
             execQuery(editText.getText().toString())
         }
-        editText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        /*editText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 // Toast.makeText(requireActivity(), "Great success", Toast.LENGTH_SHORT).show()
                 execQuery(editText.getText().toString())
                 return@OnKeyListener true
             }
             false
+        })*/
+        editText.addTextChangedListener( object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                execQuery(editText.getText().toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
         })
         var tmpArr: ArrayList<SearchModel> = ArrayList()
         super.onViewCreated(itemView, savedInstanceState)
@@ -71,41 +87,7 @@ class NewActivityFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun execQuery(userQuery: String): java.util.ArrayList<SearchModel>  {
-        val values = mapOf("query" to userQuery)
-        val headers = mapOf("Content" to "application/json", "Authorization" to "Bearer search-ngvhsxdu1hjd3rzb433px13e")
-
-        val url = URL("https://kinisi-search-6f45a3.ent.us-central1.gcp.cloud.es.io/api/as/v1/engines/kinisi-search/search")
-        var ret = String()
         var tmpArr: java.util.ArrayList<SearchModel> = java.util.ArrayList()
-        /* with(url.openConnection() as HttpURLConnection) {
-            requestMethod = "POST"
-            setRequestProperty("Content", "application/json")
-            setRequestProperty("Accept", "application/json")
-            setRequestProperty("Authorization", "Bearer search-ngvhsxdu1hjd3rzb433px13e")
-
-            val reqString = "{\"query\": \"$userQuery\"}"
-
-            val wr = OutputStreamWriter(getOutputStream());
-            wr.write(reqString);
-            wr.flush();
-
-            println("URL : $url")
-            println("Response Code : $responseCode")
-
-            BufferedReader(InputStreamReader(inputStream)).use {
-                val response = StringBuffer()
-
-                var inputLine = it.readLine()
-                while (inputLine != null) {
-                    response.append(inputLine)
-                    inputLine = it.readLine()
-                }
-                ret = response
-                println("Response : $response")
-            }
-
-        }
-        return ret*/
 
         GlobalScope.launch(Dispatchers.IO) {
             val url = URL("https://kinisi-search-6f45a3.ent.us-central1.gcp.cloud.es.io/api/as/v1/engines/kinisi-search/search")
@@ -157,8 +139,8 @@ class NewActivityFragment : Fragment() {
                         val name = nameObj.getString("raw")
                         Log.i("name: ", name.toString())
                         val sacObj = iter.getJSONObject("tags_sac_scale")
-                        val sacType = sacObj.getString("raw")
-                        Log.i("Sac Scale: ", sacType.toString())
+                        val sacType = sacObj.getString("raw").replace("_", " ")
+                        Log.i("Sac Scale: ", sacType)
                         val xCoordObj = iter.getJSONObject("geometry_coordinates_0_1")
                         val xCoord = xCoordObj.getString("raw")
                         val yCoordObj = iter.getJSONObject("geometry_coordinates_1_0")
@@ -190,7 +172,68 @@ class NewActivityFragment : Fragment() {
         }
         return tmpArr
     }
+  /*  @SuppressLint("NotifyDataSetChanged")
+    fun parseJSON(): java.util.ArrayList<DataModel> {
+        var tmpArr: java.util.ArrayList<DataModel> = java.util.ArrayList()
+        GlobalScope.launch(Dispatchers.IO) {
+            val url =
+                URL("https://eflask-kinisi.herokuapp.com/api/closest&n=1&47.503900920958415,-122.04708518140542")
+            // URL("https://eflask-kinisi.herokuapp.com/api/closest&n=5&45.9604792,-123.6870344")
+            val httpsURLConnection = url.openConnection() as HttpsURLConnection
+            httpsURLConnection.setRequestProperty(
+                "Accept",
+                "application/json"
+            ) // The format of response we want to get from the server
+            httpsURLConnection.requestMethod = "GET"
+            httpsURLConnection.doInput = true
+            httpsURLConnection.doOutput = false
+            // Check if the connection is successful
+            val responseCode = httpsURLConnection.responseCode
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                val response = httpsURLConnection.inputStream.bufferedReader()
+                    .use { it.readText() }  // defaults to UTF-8
+                withContext(Dispatchers.Main) {
 
+                    val jsonObject = JSONTokener(response).nextValue() as JSONArray
+
+                    for (i in 0 until jsonObject.length()) {
+                        val jsonArray = jsonObject.getJSONObject(i)
+                        // ID
+                        val id = jsonArray.getString("id")
+                        Log.i("ID: ", id)
+
+                        val tags = jsonArray.getJSONObject("tags")
+                        val name = tags.getString("name")
+                        val type = tags.getString("sac_scale")
+                        val dist = tags.getDouble("dist")
+
+                        Log.i("Dist", dist.toString())
+                        Log.i("Name ", name)
+                        Log.i("Type ", type)
+
+                        val model = DataModel(
+                            id,
+                            name,
+                            type,
+                            "%.2f".format(dist).toDouble().toString() + " mi"
+                        )
+
+                        tmpArr.add(model)
+                        adapter = RecyclerAdapter(tmpArr)
+                        adapter!!.notifyDataSetChanged()
+                        Log.d("model: ", model.toString())
+                        Log.d("tmp arr: ", tmpArr.toString())
+
+                    }
+
+                    binding.recyclerView.adapter = adapter
+                }
+            } else {
+                Log.e("HTTPURLCONNECTION_ERROR", responseCode.toString())
+            }
+        }
+        return tmpArr
+    }*/
 /*    fun parseJSON(): java.util.ArrayList<DataModel> {
         var tmpArr: java.util.ArrayList<DataModel> = java.util.ArrayList()
         GlobalScope.launch(Dispatchers.IO) {
