@@ -37,6 +37,7 @@ class RecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
         viewHolder.itemTitle.text = dataModel[position].title
+        viewHolder.itemType.text = ""
         // viewHolder.itemType.text = dataModel[position].dist.toString()
         viewHolder.itemDesc.text = dataModel[position].type
     }
