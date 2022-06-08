@@ -32,7 +32,7 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/searchButton"
             android:layout_weight="0.5"
-            android:hint="Search Location"
+            android:hint="Search Trails"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view"

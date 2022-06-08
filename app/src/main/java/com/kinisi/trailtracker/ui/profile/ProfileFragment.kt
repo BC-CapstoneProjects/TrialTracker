@@ -20,8 +20,10 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import com.github.mikephil.charting.data.Entry
@@ -93,6 +95,27 @@ class ProfileFragment : Fragment() {
             copyTextToClipboard()
             pasteTextFromClipboard()
         }
+
+        val fbBtn: ImageButton = binding.fbButton
+        fbBtn.setOnClickListener {
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/"))
+            startActivity(browserIntent)
+        }
+
+        val twitterBtn: ImageButton = binding.twitterButton
+        twitterBtn.setOnClickListener {
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("http://www.twitter.com/"))
+            startActivity(browserIntent)
+        }
+
+        val instaBtn: ImageButton = binding.instaButton
+        instaBtn.setOnClickListener {
+            val browserIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("http://www.instagram.com/"))
+            startActivity(browserIntent)
+        }
         return root
     }
 
@@ -104,8 +127,11 @@ class ProfileFragment : Fragment() {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
                     val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    var clipData = ClipData.newPlainText("simple text", "I just traveled: " + Distance[0] + "")
+                    var clipData = ClipData.newPlainText("simple text", "I just traveled " + Distance[0] + " miles with Kinisi!")
                     clipboardManager.setPrimaryClip(clipData)
+
+                    Toast.makeText(requireContext(),
+                        "Copied to the Clipboard", Toast.LENGTH_SHORT).show()
 
 
                 } else {
