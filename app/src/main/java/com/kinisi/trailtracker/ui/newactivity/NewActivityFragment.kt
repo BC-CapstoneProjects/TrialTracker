@@ -60,7 +60,7 @@ class NewActivityFragment : Fragment() {
         })*/
         editText.addTextChangedListener( object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                
+
             }
 
             override fun onTextChanged(s: CharSequence, start: Int,
@@ -139,8 +139,8 @@ class NewActivityFragment : Fragment() {
                         val name = nameObj.getString("raw")
                         Log.i("name: ", name.toString())
                         val sacObj = iter.getJSONObject("tags_sac_scale")
-                        val sacType = sacObj.getString("raw")
-                        Log.i("Sac Scale: ", sacType.toString())
+                        val sacType = sacObj.getString("raw").replace("_", " ")
+                        Log.i("Sac Scale: ", sacType)
                         val xCoordObj = iter.getJSONObject("geometry_coordinates_0_1")
                         val xCoord = xCoordObj.getString("raw")
                         val yCoordObj = iter.getJSONObject("geometry_coordinates_1_0")
