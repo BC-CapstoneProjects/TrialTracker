@@ -26,15 +26,15 @@
     <fragment
         android:id="@+id/navigation_favorites"
         android:name="com.kinisi.trailtracker.ui.favorites.FavoritesFragment"
-        android:label="@string/title_favorites"
+        android:label="@string/title_History"
         tools:layout="@layout/fragment_favorites" />
-<!--
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.kinisi.trailtracker.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
--->
+    <!--
+        <fragment
+            android:id="@+id/navigation_notifications"
+            android:name="com.kinisi.trailtracker.ui.notifications.NotificationsFragment"
+            android:label="@string/title_notifications"
+            tools:layout="@layout/fragment_notifications" />
+    -->
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.kinisi.trailtracker.ui.profile.ProfileFragment"

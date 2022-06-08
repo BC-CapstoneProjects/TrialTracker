@@ -208,9 +208,9 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
         txtLat.text = "LATITUDE : " + location.latitude
         txtLong.text = "LONGITUDE : " + location.longitude
         distance = truncate((sqrt((deltaLngMeters*deltaLngMeters) + (deltaLatMeters*deltaLatMeters))*11000.57))
-        txtDistance.text = "Distance " + distance/100 + "km"
+        txtDistance.text = "Distance " + distance/100 + "Miles"
         speed = truncate((location.getSpeed()) *360)
-        txtSpeed.text = "Speed " + speed/100 +"km/h"
+        txtSpeed.text = "Speed " + speed/100 +"MPH"
         if (i ==0)
         {
             marker = LatLng(location.latitude, location.longitude)
@@ -414,7 +414,7 @@ class Speedometer: AppCompatActivity(), OnMapReadyCallback {
 
 
         val userInfoDocRef = Firebase.firestore
-            .collection(("users").toString()).document(userId.toString())
+            .collection(("users").toString()).document("1qCgazCHTPQtnNSA9b3hdWrkmUs2")
         userInfoDocRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {

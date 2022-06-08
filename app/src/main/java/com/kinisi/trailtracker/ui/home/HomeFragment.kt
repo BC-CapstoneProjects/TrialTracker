@@ -119,7 +119,7 @@ class HomeFragment : Fragment() {
             }
         val lEntries = ArrayList<Entry>()
         for (i in 1..dayOfMonth) {
-            FloatDistance = Distance[i].toFloat()
+            FloatDistance = Distance[Distance.size-dayOfMonth+i-1].toFloat()
             lEntries.add(Entry(i.toFloat(),FloatDistance ))
             initial+=1f
         }
@@ -130,9 +130,9 @@ class HomeFragment : Fragment() {
         }
         val entries = ArrayList<BarEntry>()
         for (x in 1..initialday.toInt()) {
-            FloatDistance = Distance[x].toFloat()
+            FloatDistance = Distance[Distance.size-initialday.toInt()+x-1].toFloat()
             entries.add(BarEntry(x.toFloat(), FloatDistance))
-            initialday+=1f
+            initialday+=0f
         }
         if (day!=7){
             for (i in day+1..7) {

@@ -19,14 +19,15 @@ import java.net.URL
 import java.util.ArrayList
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
-    var Distance: java.util.ArrayList<String> = java.util.ArrayList()
+    var Distance: java.util.ArrayList<Double> = java.util.ArrayList()
+    var Speed: java.util.ArrayList<Double> = java.util.ArrayList()
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-         var itemTitle: TextView = itemView.findViewById(R.id.title)
-         var itemType: TextView = itemView.findViewById(R.id.type)
-         var itemDesc: TextView = itemView.findViewById(R.id.description)
+        var itemTitle: TextView = itemView.findViewById(R.id.title)
+        var itemType: TextView = itemView.findViewById(R.id.type)
+        var itemDesc: TextView = itemView.findViewById(R.id.description)
 
     }
 
@@ -51,29 +52,44 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
 
-            val docRef =  Firebase.firestore.collection("UserFavTrails").document("ciJDSJnCFn6yCU9et7qK")
-            docRef.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
-                        Distance = document.get("UserFavTrails") as java.util.ArrayList<String>
-                        viewHolder.itemTitle.text = Distance[i]
+        val docRef =  Firebase.firestore.collection("userTotalDistance").document("ciJDSJnCFn6yCU9et7qK")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                    Distance = document.get("userTotalDistance") as java.util.ArrayList<Double>
+                    viewHolder.itemTitle.text = "Total Distance: " + Distance[Distance.size - i-1].toString() + " Miles"
 
-                    } else {
-                        Log.d(ContentValues.TAG, "No such document")
-                    }
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
                 }
-                .addOnFailureListener { exception ->
-                    Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+        val ref =  Firebase.firestore.collection("userAverageSpeed").document("ciJDSJnCFn6yCU9et7qK")
+        ref.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                    Speed = document.get("userAverageSpeed") as java.util.ArrayList<Double>
+                    viewHolder.itemDesc.text = "Average Speed: " + Speed[Speed.size - i-1].toString() + " MPH"
+
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
                 }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
 
         viewHolder.itemType.text = type1[i]
-        viewHolder.itemDesc.text = description1[i]
+        //viewHolder.itemDesc.text = description1[i]
 
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return 7
     }
 
 
