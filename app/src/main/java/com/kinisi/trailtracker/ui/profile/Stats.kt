@@ -42,7 +42,7 @@ class Stats: AppCompatActivity () {
     }
 
     private fun setBarChart() {
-        title = "Bar Chart"
+        title = "Stats"
         val bChart = findViewById<BarChart>(R.id.progressBarChart)
         println(bChart)
 
@@ -100,7 +100,7 @@ class Stats: AppCompatActivity () {
 
         //remove description label
         //bChart.description.isEnabled = false
-        bChart.description.text = "Miles moved this year"
+        bChart.description.text = "Miles Moved This Year"
         bChart.description.setPosition(700f,70f)
         bChart.description.setTextSize(20f)
         // bChart.description.setPosition()

@@ -175,7 +175,7 @@ class HomeFragment : Fragment() {
         //remove right y-axis
         bChart.axisRight.isEnabled = false
 
-        bChart.description.text = "Miles moved this week"
+        bChart.description.text = "Miles Moved This Week"
         bChart.description.setPosition(700f, 70f)
         bChart.description.setTextSize(15f)
 
@@ -295,7 +295,7 @@ class HomeFragment : Fragment() {
 
             //remove description label
             //lChart.description.isEnabled = false
-            lChart.description.text = "Miles moved this month"
+            lChart.description.text = "Miles Moved This Month"
             lChart.description.setPosition(700f, 70f)
             lChart.description.textSize = 15f
 

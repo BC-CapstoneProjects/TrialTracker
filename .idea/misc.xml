@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/drawable/ic_baseline_directions_walk_24.xml" value="0.28177083333333336" />
+        <entry key="app/src/main/res/drawable/ic_facebook_logo_blue_circle_large_transparent_png.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_search_24dp.xml" value="0.2875" />
         <entry key="app/src/main/res/drawable/rectangle_2.xml" value="0.17083333333333334" />
         <entry key="app/src/main/res/font/header.xml" value="0.16944444444444445" />
@@ -28,7 +29,7 @@
         <entry key="app/src/main/res/layout/fragment_item_list.xml" value="0.12239583333333333" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.15081521739130435" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.165" />
         <entry key="app/src/main/res/layout/frame_trailview.xml" value="0.335" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
